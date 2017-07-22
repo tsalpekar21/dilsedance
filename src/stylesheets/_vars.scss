@@ -1,0 +1,21 @@
+@import "./lib/base/variables";
+$light-grey: #D8E4FF;
+$green: #2A9B1B;
+
+@keyframes fadeIn {
+  0% {
+      opacity: 0;
+  }
+  100% {
+      opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+      opacity: 1;
+  }
+  100% {
+      opacity: 0;
+  }
+}

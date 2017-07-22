@@ -178,7 +178,7 @@
                 <iframe width="100%" height="100%" src="https://www.youtube.com/embed/v15Wu8TseS4" frameborder="0" allowfullscreen></iframe>
               </div>
               <div class="six columns service">
-                THIS IS A TESTIMONIAL
+                Testimonial
               </div>
             </div>
           </div>
@@ -189,7 +189,7 @@
     <div class="hero-2">
       <div class="upper">
         <div class="img-card">
-          Here is a testimonial about how great at dance she is and shit.
+          Testimonial
         </div>
       </div>
     </div>

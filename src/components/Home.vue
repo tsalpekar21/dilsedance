@@ -6,7 +6,7 @@
           <img class="logo" src="~assets/logo.jpg"></img>
         </div>
         <div class="mission-text animate a-4">
-          Learn dance with Rachna!
+          Learn to dance with Rachna!
         </div>
       </div>
     </div>
@@ -26,7 +26,7 @@
                 <div class="title">Event Choreography</div>
                 <div class="message">
                   We would love to help you create a dance for your special event that you and your audience will remember forever! 
-                  Email dilsedance.mi@gmail.com for more details
+                  <div class="register" @click="toSection($event, 'contact')">Contact me below for details.</div>
                 </div>
               </div>
 
@@ -44,7 +44,7 @@
                 <div class="title">Group Classes</div>
                 <div class="message">
                   Classes last five weeks and will revolve around the different dance styles that hail from India. 
-                  No experience is necessary. Just come and enjoy moving to the music! Email dilsedance.mi@gmail.com to register!
+                  No experience is necessary. Just come and enjoy moving to the music! <span class="register" @click="toSection($event, 'classes')">Click Here to register.</span>
                 </div>
               </div>
             </div>
@@ -104,61 +104,53 @@
               <div class="row-header">
                 Class Schedule
               </div>
-              <div class="banner-info">
+              <div class="info-container">
                 <div>
-                  <strong>Cost:</strong> $10 
-                </div>
-                <div>
-                  <strong>Located at:</strong> Synergy Dance Academy, Plymouth MI
+                  <strong>Where:</strong> Synergy Dance Academy, Plymouth MI
                 </div>
               </div>
             </div>
             <div class="classes">
-              <div class="class" v-for="(c, i) in classes" :class="['animate', `a-${i+1}`, pastTime(c.time), c.success ? 'success' : null]">
-                <div class="u-full-width u-cf">
-                  <div class="u-pull-left calendar">
-                    <div class="icon-cal"> </div>
-                  </div>
-                  <div class="u-pull-right day-title">
-                    <div> {{ c.time | moment('MM/DD') }} </div>
-                    <div> {{ c.time | moment('dddd') }} </div>
-                  </div>
-                </div>
-                <transition name="fade">
-                  <div class="content passed" v-if="new Date().getTime() > c.time" key="pasttime">
-                    Not Available
-                  </div>
-                  <div class="content" v-else-if="!c.selected" key="selectable">
-                    <div>
-                      <span>
-                        <strong>Time: </strong>
-                        {{ c.time | moment('hh:mm a')}}
-                      </span>
-                      <div>
-                        <strong>Where: </strong>
-                        {{ c.where }}
-                      </div>
-                      <div>
-                        <strong>Cost: </strong>
-                        ${{ c.cost }}
-                      </div>
+              <div class="class" v-for="(c, i) in classes" :class="['animate', `a-${i+1}`, pastTime(c.time)]">
+                <div v-if="!c.success">
+                  <div class="u-full-width u-cf">
+                    <div class="u-pull-left calendar">
+                      <div class="icon-cal"> </div>
                     </div>
-                    <div class="signup-container">
+                    <div class="u-pull-right day-title">
+                      <div> {{ c.time | moment('MM/DD') }} </div>
+                      <div> {{ c.time | moment('dddd') }} </div>
+                      <div> ${{ c.cost }} </div>
+                    </div>
+                  </div>
+                  <transition name="fade">
+                    <div class="content passed" v-if="new Date().getTime() > c.time" key="pasttime">
+                      Not Available
+                    </div>
+                    <div class="content selectable" v-else-if="!c.selected && !c.success" key="selectable">
+                      <div>
+                        <span>
+                          {{ c.time | moment('h:mm a')}}
+                        </span>
+                      </div>
                       <button @click="selectClass(c.time)" class="button-primary">Sign Up</button>
                     </div>
-                  </div>
-                  <div class="content scooched" v-else key="selected">
-                    <div class="u-full-width">
-                      <label for="email">Email</label>
-                      <input class="u-full-width email" type="email" placeholder="test@mailbox.com" id="email">
+                    <div class="content scooched" v-else key="selected">
+                      <div class="u-full-width">
+                        <label for="email">Email</label>
+                        <input class="u-full-width email" type="email" placeholder="test@mailbox.com" id="email" v-model="fromEmail">
+                      </div>
+                      <div class="u-full-width">
+                        <label for="name">Name</label>
+                        <input class="u-full-width name" type="text" placeholder="Jesse James" id="name" v-model="name">
+                      </div>
+                      <button @click="submitClass(c)" class="button-primary">Submit</button>
                     </div>
-                    <div class="u-full-width">
-                      <label for="name">Name</label>
-                      <input class="u-full-width name" type="text" placeholder="Jesse James" id="name">
-                    </div>
-                    <button @click="submitClass(c)" class="button-primary">Submit</button>
-                  </div>
-                </transition>
+                  </transition>
+                </div>
+                <div class="success" v-else>
+                  Success
+                </div>
               </div>
             </div>
           </div>
@@ -193,6 +185,7 @@
         </div>
       </div>
     </div>
+
     <div class="contact-container">
       <div class="container" id="contact">
         <div class="row contact">
@@ -206,15 +199,15 @@
           <div class="row contact">
             <div class="six columns">
               <label for="email">Email</label>
-              <input class="u-full-width email" type="email" placeholder="test@mailbox.com" id="email">
+              <input class="u-full-width email" type="email" placeholder="test@mailbox.com" id="email" v-model="messageEmail">
             </div>
             <div class="six columns">
               <label for="name">Name</label>
-              <input class="u-full-width name" type="text" placeholder="Jesse James" id="name">
+              <input class="u-full-width name" type="text" placeholder="Jesse James" id="name" v-model="messageName">
             </div>
           </div>
           <label for="exampleMessage">Message</label>
-          <textarea class="u-full-width message" placeholder="Hi Rachna …" id="exampleMessage"></textarea>
+          <textarea class="u-full-width message" placeholder="Hi Rachna …" id="exampleMessage" v-model="message"></textarea>
           <div class="center-text">
             <input class="button-primary" type="submit" value="Submit">
           </div>
@@ -227,6 +220,7 @@
 <script>
 import $ from 'jquery'
 import moment from 'moment'
+import velocity from 'velocity-animate'
 
 export default {
   data () {
@@ -237,41 +231,51 @@ export default {
       $nav: null,
       $hero: null,
       selected: null,
+      messageName: null,
+      messageEmail: null,
+      message: null,
+      name: null,
+      fromEmail: null,
       classes: [
         {
           time: new Date().getTime(),
           where: 'Synergy Dance Academy',
           cost: 10,
           selected: false,
-          success: false
+          success: false,
+          loading: false
         },
         {
           time: new Date().getTime(),
           where: 'Synergy Dance Academy',
           cost: 10,
           selected: false,
-          success: false
+          success: false,
+          loading: false
         },
         {
           time: new Date().getTime(),
           where: 'Synergy Dance Academy',
           cost: 10,
           selected: false,
-          success: false
+          success: false,
+          loading: false
         },
         {
           time: new Date().getTime(),
           where: 'Synergy Dance Academy',
           cost: 10,
           selected: false,
-          success: false
+          success: false,
+          loading: false
         },
         {
           time: new Date().getTime(),
           where: 'Synergy Dance Academy',
           cost: 10,
           selected: false,
-          success: false
+          success: false,
+          loading: false
         }
       ]
     }
@@ -296,6 +300,12 @@ export default {
     pastTime (time) {
       return new Date().getTime() > time ? 'passed' : null
     },
+
+    toSection (e, section) {
+      let el = document.querySelector('#' + section)
+      velocity(el, 'scroll', { offset: '-70', easing: 'ease', duration: 800 })
+    },
+
     selectClass (time) {
       this.classes.forEach(cl => {
         if (cl.time === time) {
@@ -306,9 +316,45 @@ export default {
       })
     },
 
+    submitMessage (el) {
+      let fromEmail = this.fromEmail
+      let name = this.name
+      let dateTime = moment(c.time).format('MM/DD [at] hh:mm')
+      let subject = `Class Registration on ${dateTime}`
+      let body = `${this.name} signed up for a class on ${dateTime}`
+      return this.sendEmail(fromEmail, name, subject, body)
+        .then(() => {
+          c.selected = false
+          c.success = true
+        })
+    },
+
     submitClass (c) {
+      let fromEmail = this.fromEmail
+      let name = this.name
+      let dateTime = moment(c.time).format('MM/DD [at] hh:mm')
+      let subject = `Class Registration on ${dateTime}`
+      let body = `${this.name} signed up for a class on ${dateTime}`
+      return this.sendEmail(fromEmail, name, subject, body)
+        .then(() => {
+          c.selected = false
+          c.success = true
+        })
+    },
+
+    sendEmail (fromEmail, fromName, subject, message) {
       // hit api and success
-      c.success = true
+      return $.ajax({
+          url: 'https://formspree.io/tsalpekar21@gmail.com',
+          method: 'POST',
+          data: {
+            fromEmail: fromEmail,
+            fromName: fromName,
+            subject: subject,
+            message: message
+          },
+          dataType: 'json'
+      })
     },
 
     checkInView (el) {
@@ -391,6 +437,17 @@ export default {
   position: relative;
   flex-direction: column;
   width: 100%;
+}
+
+.register {
+  color: #ffffff;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 16px;
+  transition: color .3s ease;
+  &:hover {
+    color: darken(#ffffff, 15%);
+  }
 }
 
 .hero-1 {
@@ -488,12 +545,14 @@ export default {
 
 .class {
   height: 325px;
-  width: 275px;
+  width: 325px;
   margin-right: 5px;
   background: #DDDEDF;
   border-radius: 4px;
   margin-top: 5px;
   display: inline-block;
+  transition: all .3s ease;
+  position: relative;
 
   &:last-child {
     margin-right: 0;
@@ -502,11 +561,15 @@ export default {
   .content {
     position: absolute;
     padding: 15px;
-    text-align: left;
+    text-align: center;
     height: 50%;
-    top: 30%;
+    top: 40%;
     white-space: wrap;
-    width: 245px;
+    width: 295px;
+  }
+
+  .content.selectable {
+    font-size: 40px;
   }
 
   .content.scooched {
@@ -515,18 +578,21 @@ export default {
 
   .content.passed {
     top: 45%;
+    pointer-events: none;
   }
 
-  &.success::before {
-    content: '';
-    z-index: 10;
-    display: block;
-    position: absolute;
+  .success {
+    width: 100%;
     height: 100%;
-    top: 0;
-    left: 0;
-    right: 0;
-    background: rgba(255, 255, 255, 0.6);
+    position: absolute;
+    background: rgba(0, 178, 98, 1);
+    color: #ffffff;
+    font-size: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4px;
+    text-align: center;
   }
 
   &.passed::before {
@@ -541,14 +607,6 @@ export default {
     background: rgba(255, 255, 255, 0.6);
   }
 
-
-  .signup-container {
-    position: absolute;
-    width: 245px;
-    text-align: center;
-    bottom: 0;
-  }
-
   .day-title {
     text-transform: uppercase;
     font-weight: 600;
@@ -557,6 +615,7 @@ export default {
     border-left: 1px solid darken(#DDDEDF, 20%);
     border-bottom: 1px solid darken(#DDDEDF, 20%);
     border-radius: 4px;
+    text-align: right;
   }
 }
 
@@ -704,6 +763,11 @@ export default {
   width: 100%;
   text-align: center;
 
+  .info-container {
+    text-align: left;
+    display: inline-block;
+  }
+
   .row-header {
     text-align: center;
     padding-right: 10px;
@@ -714,7 +778,7 @@ export default {
     // border: 1px solid darken(#DDDEDF, 2%);
     font-weight: 800;
     // border-radius: 4px;
-    display: inline-block;
+    display: block;
     // box-shadow: 0 10px 20px 0 rgba(0,0,0,.08);
     &.contact {
       color: #ffffff;

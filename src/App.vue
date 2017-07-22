@@ -5,19 +5,19 @@
         <img class="logo" src="~assets/logo.jpg"></img>
       </div>
       <div class="nav-container">
-<!--         <a href="#" @click="toTestimonials($event, 'testimonials')" class="nav-title">
+<!--         <a href="#" @click="toSection($event, 'testimonials')" class="nav-title">
           Testimonials
         </a>
- -->        <a href="#" @click="toTestimonials($event, 'classes')" class="nav-title">
+ -->        <a href="#" @click="toSection($event, 'classes')" class="nav-title">
           Classes
         </a>
-<!--         <a href="#" @click="toTestimonials($event, 'mission')" class="nav-title">
+<!--         <a href="#" @click="toSection($event, 'mission')" class="nav-title">
           Mission
         </a>
- -->        <a href="#" @click="toTestimonials($event, 'services')" class="nav-title">
+ -->        <a href="#" @click="toSection($event, 'services')" class="nav-title">
           Services
         </a>
-        <a href="#" @click="toTestimonials($event, 'contact')" class="nav-title">
+        <a href="#" @click="toSection($event, 'contact')" class="nav-title">
           Contact
         </a>
       </div>
@@ -33,7 +33,7 @@ import velocity from 'velocity-animate'
 export default {
   name: 'app',
   methods: {
-    toTestimonials (e, section) {
+    toSection (e, section) {
       let el = document.querySelector('#' + section)
       velocity(el, 'scroll', { offset: '-70', easing: 'ease', duration: 800 })
     }

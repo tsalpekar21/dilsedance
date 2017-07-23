@@ -27,3 +27,10 @@ a {
 .fade-enter, .fade-leave-active {
   opacity: 0
 }
+
+@font-face {
+  font-family: 'Philosopher';
+  src: url('~assets/Philosopher-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}

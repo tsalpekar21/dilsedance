@@ -36,6 +36,7 @@
                 <div class="message">
                   1-on-1 personalized online classes, tailored to your preference of curriculum. Styles include Bollywood, 
                   Bhangra, Folk, or Fusion
+                  <div class="register" @click="toSection($event, 'contact')">Contact me below for details.</div>
                 </div>
               </div>
 
@@ -111,9 +112,6 @@
                 <div>
                   <strong>Time:</strong> 8:00 PM
                 </div>
-                <div>
-                  <strong>Cost:</strong> $10
-                </div>
               </div>
             </div>
             <div class="classes">
@@ -164,12 +162,25 @@
           <div class="row column">
             <div class="header-container">
               <div class="row-header">
-                Testimonial
+                Testimonials
               </div>
             </div>
             <div class="services">
-              <div class="six columns testimonial video">
-                <iframe width="100%" height="100%" src="https://www.youtube.com/embed/v15Wu8TseS4" frameborder="0" allowfullscreen></iframe>
+              <div class="six columns testimonial">
+                <!-- <iframe width="100%" height="100%" src="https://www.youtube.com/embed/v15Wu8TseS4" frameborder="0" allowfullscreen></iframe> -->
+                <div>
+                  Her energy and enthusiasm are apparent in everything she does. She is an
+                  extremely talented choreographer with experience and accomplishments in various styles from all across the world. Her ability to learn/teach all 
+                  these different styles not only shows her talent, but her true love of dance. She has the special ability to always bring a smile to people's faces, 
+                  making Rachna one of the most fun and talented performers that I have ever been around.
+                </div>
+                <div class="twelve columns sub-text-container left">
+                  <div class="sub-text thumbnail-container"><img class="testimonial-thumbnail" src="~assets/testimonial2.jpg" /></div>
+                  <div class="sub-text">
+                    <div>Omkar Vale</div>
+                    <div class="relation">Dance Team Co-Founder</div>
+                  </div>
+                </div>
               </div>
               <div class="six columns testimonial">
                 <div>
@@ -178,9 +189,12 @@
                   fun while learning and performing. We encourage everyone to certainly give her an opportunity to teach you. She is a very talented, 
                   proven artist.
                 </div>
-                <div class="sub-text-container">
-                  <div class="sub-text">Dhaval and Nina Kikani</div>
-                  <div class="sub-text relation">A happy client</div>
+                <div class="twelve columns sub-text-container right">
+                  <div class="sub-text">
+                    <div>Dhaval and Nina Kikani</div>
+                    <div class="relation">A happy client</div>
+                  </div>
+                  <div class="sub-text thumbnail-container"><img class="testimonial-thumbnail" src="~assets/testimonial1.jpg" /></div>
                 </div>
               </div>
             </div>
@@ -455,6 +469,15 @@ export default {
   opacity: 0;
 }
 
+.testimonial-thumbnail {
+  height: 70px;
+  width: 70px;
+  border-radius: 70px;
+  margin-right: 10px;
+  margin-left: 10px;
+  display: inline-block;
+}
+
 .animate {
   opacity: 0;
   transform: translate3d(0px, 50px, 0px);
@@ -597,15 +620,22 @@ export default {
   font-size: 20px;
   position: relative;
 
+  .thumbnail-container {
+    display: inline-block;
+  }
+
   .sub-text-container {
     margin-top: 20px;
+    &.right { text-align: right; }
+    &.left { text-align: left; }
   }
 
   .sub-text {
+    vertical-align: top;
     font-size: 16px;
     font-weight: 600;
-    text-align: right;
-    &.relation {
+    display: inline-block;
+    .relation {
       color: lighten(#000000, 40%);
     }
   }
@@ -669,8 +699,8 @@ export default {
 }
 
 .class {
-  height: 325px;
-  width: 325px;
+  height: 300px;
+  width: 250px;
   margin-right: 5px;
   background: #DDDEDF;
   border-radius: 4px;
@@ -690,7 +720,7 @@ export default {
     height: 50%;
     top: 40%;
     white-space: wrap;
-    width: 295px;
+    width: 220px;
   }
 
   .content.selectable {
@@ -923,6 +953,7 @@ export default {
 .dance-styles {
   position: absolute;
   display: inline-block;
+  font-family: 'Philosopher';
   color: #000000;
   padding: 10px;
   border-radius: 4px;
@@ -936,6 +967,7 @@ export default {
 }
 
 .dance-style {
+  font-family: 'Philosopher';
   height: 200px;
   width: 100%;
   text-align: center;
@@ -943,7 +975,7 @@ export default {
   align-items: center;
   justify-content: center;
   color: #ffffff;
-  font-size: 30px;
+  font-size: 40px;
   font-weight: 600;
   cursor: pointer;
   box-shadow: 0 10px 20px 0 rgba(0,0,0,.08);

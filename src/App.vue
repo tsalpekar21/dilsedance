@@ -109,8 +109,8 @@ export default {
     display: inline-block;
     z-index: 20;
     line-height: 60px;
-    margin-right: 10px;
-    margin-left: 10px;
+    margin-right: 5px;
+    margin-left: 5px;
     color: #ffffff !important;
   }
 

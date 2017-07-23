@@ -12,7 +12,7 @@
     </div>
 
     <div class="wrapper">
-      <div class="bg-row">
+      <div class="bg-row pre-colors">
         <div class="container" id="services">
           <div class="row column">
             <div class="header-container">
@@ -21,7 +21,7 @@
               </div>
             </div>
             <div class="services">
-              <div class="four columns service animate a-1">
+              <div class="four columns service center animate a-1">
                 <div> <img src="~assets/rachna2.jpg" class="thumbnail" /> </div>
                 <div class="title">Event Choreography</div>
                 <div class="message">
@@ -30,7 +30,7 @@
                 </div>
               </div>
 
-              <div class="four columns service animate a-2">
+              <div class="four columns service center animate a-2">
                 <div><img src="~assets/rachna3.jpg" class="thumbnail" /></div>
                 <div class="title">Online Classes</div>
                 <div class="message">
@@ -39,12 +39,12 @@
                 </div>
               </div>
 
-              <div class="four columns service animate a-3">
+              <div class="four columns service center animate a-3">
                 <div><img src="~assets/rachna5.jpg" class="thumbnail" /></div>
                 <div class="title">Group Classes</div>
                 <div class="message">
                   Classes last five weeks and will revolve around the different dance styles that hail from India. 
-                  No experience is necessary. Just come and enjoy moving to the music! <span class="register" @click="toSection($event, 'classes')">Click Here to register.</span>
+                  No experience is necessary. Just come and enjoy moving to the music! <span class="register" @click="toSection($event, 'classes')">Click Here for more info.</span>
                 </div>
               </div>
             </div>
@@ -102,11 +102,17 @@
           <div class="row column">
             <div class="header-container">
               <div class="row-header">
-                Class Schedule
+                Classes
               </div>
               <div class="info-container">
                 <div>
                   <strong>Where:</strong> Synergy Dance Academy, Plymouth MI
+                </div>
+                <div>
+                  <strong>Time:</strong> 8:00 PM
+                </div>
+                <div>
+                  <strong>Cost:</strong> $10
                 </div>
               </div>
             </div>
@@ -120,7 +126,6 @@
                     <div class="u-pull-right day-title">
                       <div> {{ c.time | moment('MM/DD') }} </div>
                       <div> {{ c.time | moment('dddd') }} </div>
-                      <div> ${{ c.cost }} </div>
                     </div>
                   </div>
                   <transition name="fade">
@@ -128,23 +133,20 @@
                       Not Available
                     </div>
                     <div class="content selectable" v-else-if="!c.selected && !c.success" key="selectable">
-                      <div>
-                        <span>
-                          {{ c.time | moment('h:mm a')}}
-                        </span>
-                      </div>
-                      <button @click="selectClass(c.time)" class="button-primary">Sign Up</button>
+                      <div class="button big-button" @click="selectClass($event, c.time)">Sign Up</div>
                     </div>
                     <div class="content scooched" v-else key="selected">
-                      <div class="u-full-width">
-                        <label for="email">Email</label>
-                        <input class="u-full-width email" type="email" placeholder="test@mailbox.com" id="email" v-model="fromEmail">
-                      </div>
-                      <div class="u-full-width">
-                        <label for="name">Name</label>
-                        <input class="u-full-width name" type="text" placeholder="Jesse James" id="name" v-model="name">
-                      </div>
-                      <button @click="submitClass(c)" class="button-primary">Submit</button>
+                      <form v-on:submit.prevent="submitClass(c, 'class')" data-vv-scope="class">
+                        <div class="u-full-width">
+                          <label for="email" :class="{'is-danger': errors.has(`class.email_${i}`)}">Email</label>
+                          <input class="u-full-width email" :class="{'is-danger': errors.has(`class.email_${i}`)}" type="email" v-validate="'required|email'" :name="`email_${i}`" placeholder="test@mailbox.com" id="email" v-model="c.fromEmail">
+                        </div>
+                        <div class="u-full-width">
+                          <label for="name" :class="{'is-danger': errors.has(`class.name_${i}`)}">Name</label>
+                          <input class="u-full-width name" :name="`name_${i}`" :class="{'is-danger': errors.has(`class.name_${i}`)}" v-validate="'required'" type="text" placeholder="Bob Dylan" id="name" v-model="c.name">
+                        </div>
+                        <button type="submit" :class="{ 'disabled': c.loading }" class="button-primary"> {{ c.loading ? 'Processing' : 'Submit' }}</button>
+                      </form>
                     </div>
                   </transition>
                 </div>
@@ -162,15 +164,24 @@
           <div class="row column">
             <div class="header-container">
               <div class="row-header">
-                Testimonials
+                Testimonial
               </div>
             </div>
             <div class="services">
-              <div class="six columns service video">
+              <div class="six columns testimonial video">
                 <iframe width="100%" height="100%" src="https://www.youtube.com/embed/v15Wu8TseS4" frameborder="0" allowfullscreen></iframe>
               </div>
-              <div class="six columns service">
-                Testimonial
+              <div class="six columns testimonial">
+                <div>
+                  Learning to dance with Rachna was a great experience. She is a very good listener and teacher for participants of all levels. 
+                  We had not danced often before and she choreographed for us and made it a lot easier to learn and adapt. We both had a lot of 
+                  fun while learning and performing. We encourage everyone to certainly give her an opportunity to teach you. She is a very talented, 
+                  proven artist.
+                </div>
+                <div class="sub-text-container">
+                  <div class="sub-text">Dhaval and Nina Kikani</div>
+                  <div class="sub-text relation">A happy client</div>
+                </div>
               </div>
             </div>
           </div>
@@ -180,38 +191,38 @@
 
     <div class="hero-2">
       <div class="upper">
-        <div class="img-card">
-          Testimonial
-        </div>
-      </div>
-    </div>
-
-    <div class="contact-container">
-      <div class="container" id="contact">
-        <div class="row contact">
-          <div class="header-container">
-            <div class="row-header">
+        <div class="img-card" id="contact">
+          <form v-on:submit.prevent="submitMessage('message')" data-vv-scope="message" class="contact-container">
+            <div class="row-header contact">
               Contact Rachna
             </div>
+            <div class="row contact">
+              <div class="six columns">
+                <label for="email" :class="{'is-danger': errors.has('message.messageEmail')}">Email Address</label>
+                <input class="u-full-width email" :class="{'is-danger': errors.has('message.messageEmail')}" type="email" v-validate="'required|email'" name="messageEmail" placeholder="test@mailbox.com" id="email" v-model="messageEmail">
+              </div>
+              <div class="six columns">
+                <label for="messageName" :class="{'is-danger': errors.has('message.messageName')}">Name</label>
+                <input class="u-full-width name" :class="{'is-danger': errors.has('message.messageName')}" type="text" v-validate="'required'" name="messageName" placeholder="Bob Dylan" id="name" v-model="messageName">
+              </div>
+            </div>
+            <label for="exampleMessage" :class="{'is-danger': errors.has('message.message')}">Message</label>
+            <textarea class="u-full-width message" name="message" :class="{'is-danger': errors.has('message.message')}" v-validate="'required'" placeholder="Hi Rachna …" id="exampleMessage" v-model="message"></textarea>
+            <div class="center-text">
+              <button class="button-primary" type="submit" :class="{ 'message-success': success, 'disabled': messageLoading }">{{ success ? 'Your message was sent!' : 'Submit' }}</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="footer">
+        <div class="row">
+          <div class="twelve columns">
+            <div class="plug">
+              <div>Made with love by</div>
+              <div>Tanay Salpekar</div>
+            </div>
           </div>
         </div>
-        <form>
-          <div class="row contact">
-            <div class="six columns">
-              <label for="email">Email</label>
-              <input class="u-full-width email" type="email" placeholder="test@mailbox.com" id="email" v-model="messageEmail">
-            </div>
-            <div class="six columns">
-              <label for="name">Name</label>
-              <input class="u-full-width name" type="text" placeholder="Jesse James" id="name" v-model="messageName">
-            </div>
-          </div>
-          <label for="exampleMessage">Message</label>
-          <textarea class="u-full-width message" placeholder="Hi Rachna …" id="exampleMessage" v-model="message"></textarea>
-          <div class="center-text">
-            <input class="button-primary" type="submit" value="Submit">
-          </div>
-        </form>
       </div>
     </div>
   </div>
@@ -233,6 +244,8 @@ export default {
       selected: null,
       messageName: null,
       messageEmail: null,
+      messageLoading: false,
+      messageSuccess: false,
       message: null,
       name: null,
       fromEmail: null,
@@ -281,6 +294,12 @@ export default {
     }
   },
 
+  computed: {
+    success () {
+      return this.messageSuccess && !this.messageLoading
+    }
+  },
+
   mounted () {
     this.$animationElements = $('.animate')
     this.$window = $(window)
@@ -306,7 +325,10 @@ export default {
       velocity(el, 'scroll', { offset: '-70', easing: 'ease', duration: 800 })
     },
 
-    selectClass (time) {
+    selectClass (el, time) {
+      $('.class').removeClass('selected')
+      $(el.target).closest('.class').addClass('selected')
+
       this.classes.forEach(cl => {
         if (cl.time === time) {
           cl.selected = true
@@ -316,27 +338,44 @@ export default {
       })
     },
 
-    submitMessage (el) {
-      let fromEmail = this.fromEmail
-      let name = this.name
-      let dateTime = moment(c.time).format('MM/DD [at] hh:mm')
-      let subject = `Class Registration on ${dateTime}`
-      let body = `${this.name} signed up for a class on ${dateTime}`
-      return this.sendEmail(fromEmail, name, subject, body)
+    submitMessage (scope) {
+      let fromEmail = this.messageEmail
+      let name = this.messageName
+
+      let subject = `Special Message from ${fromEmail}`
+      let message = this.message
+      return this.$validator.validateAll(scope)
+        .then(result => {
+          if (result) {
+            this.messageLoading = true
+            return this.sendEmail(fromEmail, name, subject, message)
+          } else {
+            return Promise.reject()
+          }
+        })
         .then(() => {
-          c.selected = false
-          c.success = true
+          this.messageLoading = false
+          this.messageSuccess = true
         })
     },
 
-    submitClass (c) {
-      let fromEmail = this.fromEmail
-      let name = this.name
+    submitClass (c, scope) {
+      let fromEmail = c.fromEmail
+      let name = c.name
       let dateTime = moment(c.time).format('MM/DD [at] hh:mm')
       let subject = `Class Registration on ${dateTime}`
-      let body = `${this.name} signed up for a class on ${dateTime}`
-      return this.sendEmail(fromEmail, name, subject, body)
+      let body = `${name} signed up for a class on ${dateTime}`
+
+      return this.$validator.validateAll(scope)
+        .then(result => {
+          if (result) {
+            c.loading = true
+            return this.sendEmail(fromEmail, name, subject, body)
+          }
+          else return Promise.reject()
+        })
         .then(() => {
+          c.loading = false
           c.selected = false
           c.success = true
         })
@@ -345,7 +384,7 @@ export default {
     sendEmail (fromEmail, fromName, subject, message) {
       // hit api and success
       return $.ajax({
-          url: 'https://formspree.io/tsalpekar21@gmail.com',
+          url: 'https://formspree.io/dilsedance.mi@gmail.com',
           method: 'POST',
           data: {
             fromEmail: fromEmail,
@@ -409,7 +448,7 @@ export default {
 .logo {
   position: relative;
   height: 100%;
-  width: 50%;
+  width: 100%;
 }
 
 .mission-text {
@@ -450,6 +489,14 @@ export default {
   }
 }
 
+.button-primary {
+  &.disabled {
+    background-color: rgba(0, 0, 0, .3);
+    border-color:rgba(0, 0, 0, .3);
+    pointer-events: none;
+  }
+}
+
 .hero-1 {
   background-image: url('~assets/cover-dancing.jpg');
   background-position: 50% 50%;
@@ -459,6 +506,16 @@ export default {
   background-image: url('~assets/rachna4.jpg');
   background-position: 50% 20%;
 }
+
+.help {
+  text-align: left;
+}
+
+.is-danger {
+  color: red;
+  border-color: red;
+}
+
 
 .wrapper {
   padding-top: 1%;
@@ -484,19 +541,20 @@ export default {
 
 .service {
   display: flex;
-  justify-content: flex-end;
+  overflow-y: auto;
+  min-height: 400px;
+  justify-content: center;
   align-items: center;
   flex-direction: column;
-  height: 400px;
   margin-right: 1%;
   margin-left: 0;
   background: #DDDEDF;
   padding: 15px;
   border-radius: 4px;
-  overflow-y: auto;
   color: #ffffff;
   box-shadow: 0 10px 20px 0 rgba(0,0,0,.08);
-  text-align: center;
+  &.center { text-align: center; }
+  margin-top: 5px;
 
   .title {
     font-size: 24px;
@@ -522,9 +580,56 @@ export default {
   &:first-child { background: darken(#007EA7, 25%);; }
 }
 
-.service.video {
+.testimonial {
+  min-height: 400px;
+  margin-right: 1%;
+  margin-top: 5px;
+  margin-left: 0;
+  background: #DDDEDF;
+  padding: 25px 25px 10px 25px;
+  border-radius: 4px;
+  color: #000000;
+  position: relative;
+  box-shadow: 0 10px 20px 0 rgba(0,0,0,.08);
+  &.scrollable { overflow-y: scroll; }
+  overflow-y: hidden;
+  line-height: 32px;
+  font-size: 20px;
+  position: relative;
+
+  .sub-text-container {
+    margin-top: 20px;
+  }
+
+  .sub-text {
+    font-size: 16px;
+    font-weight: 600;
+    text-align: right;
+    &.relation {
+      color: lighten(#000000, 40%);
+    }
+  }
+ }
+
+.footer {
+  padding: 5px;
+  position: absolute;
+  bottom: 0;
+  border-radius: 4px;
+  color: #ffffff;
+  z-index: 5000;
+}
+
+.plug {
+  text-align: left;
+  font-size: 13px;
+}
+
+.testimonial.video {
   padding: 0;
   background: transparent;
+  height: 400px;
+  overflow: hidden;
 }
 
 .services {
@@ -541,6 +646,26 @@ export default {
   white-space: nowrap;
   overflow-y: hidden;
 
+}
+
+.success {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background: rgba(0, 178, 98, 1);
+  color: #ffffff;
+  font-size: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.message-success {
+  pointer-events: none;
+  background: rgba(0, 178, 98, 1) !important;
+  border-color: rgba(0, 178, 98, 1) !important;
 }
 
 .class {
@@ -570,6 +695,7 @@ export default {
 
   .content.selectable {
     font-size: 40px;
+    text-transform: uppercase;
   }
 
   .content.scooched {
@@ -579,20 +705,6 @@ export default {
   .content.passed {
     top: 45%;
     pointer-events: none;
-  }
-
-  .success {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    background: rgba(0, 178, 98, 1);
-    color: #ffffff;
-    font-size: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 4px;
-    text-align: center;
   }
 
   &.passed::before {
@@ -629,8 +741,9 @@ export default {
 }
 
 .contact-container {
-  background: #000000;
+  background: transparent;
   color: #ffffff;
+  padding: 25px;
   .email, .name, .message {
     color: #000000;
   }
@@ -647,25 +760,29 @@ export default {
 .upper {
   margin: 0 auto;
   z-index: 200;
-  height: 80%;
+  height: 50%;
   color: #ffffff;
   text-align: center;
 
   .img-card {
-    color: #000000;
     border-radius: 4px;
     position: absolute;
     font-size: 30px;
-    top: 5%;
-    right: 5%;
-    width: 50%;
-    height: 60%;
-    background: #ffffff;
+    top: 0;
+    right:0; 
+    left: 0;
+    height: 100%;
+    background: rgba(255, 255, 255, .6);
+    form { margin-bottom: 0; }
+
+    input, textarea {
+      font-size: 14px;
+    }
   }
 
   .mission-text {
     height: 40%;
-    font-size: 26px;
+    font-size: 16px;
   }
 }
 
@@ -722,8 +839,7 @@ export default {
   color: #000000;
   line-height: 1.8;
   border-radius: 4px;
-  height: 266.5px;
-  //In-person Group Classes will be held on Thursdays from 8pm to 9pm at Synergy Dance Academy (Plymouth, MI).
+  min-height: 266.5px;
   padding: 15px;
   overflow: auto;
   box-shadow: 0 10px 20px 0 rgba(0,0,0,.08);
@@ -757,6 +873,7 @@ export default {
   height: 100%;
   padding-bottom: 40px;
   padding-top: 20px;
+  &.pre-colors { padding-bottom: 0; }
 }
 
 .header-container {
@@ -764,7 +881,7 @@ export default {
   text-align: center;
 
   .info-container {
-    text-align: left;
+    text-align: center;
     display: inline-block;
   }
 
@@ -774,12 +891,8 @@ export default {
     padding-left: 10px;
     font-size: 28px;
     margin-bottom: 1%;
-    // background: #DDDEDF;
-    // border: 1px solid darken(#DDDEDF, 2%);
     font-weight: 800;
-    // border-radius: 4px;
     display: block;
-    // box-shadow: 0 10px 20px 0 rgba(0,0,0,.08);
     &.contact {
       color: #ffffff;
     }
@@ -797,10 +910,14 @@ export default {
   margin: 0;
 }
 
+.big-button {
+  font-size: 20px;
+  padding: 20px 40px;
+  height: auto;
+}
+
 .colors {
   position: relative;
-  // margin-top: 40px;
-  // margin-bottom: 20px;
 }
 
 .dance-styles {
@@ -863,6 +980,7 @@ export default {
   .info {
     width: 96%;
     padding: 15px;
+    height: 266.5px;
     &:first-child { margin-top: 0; }
   }
 
@@ -873,13 +991,46 @@ export default {
   .p1 {
     display: block;
   }
+  .bg-row{
+    &.pre-colors { padding-bottom: 40px; }
+  }
 
-
+  .upper {
+    position: absolute;
+    width: 100%;
+    top: 10%;
+    height: 70%;
+    .img-card {
+      border-radius: 4px;
+      position: absolute;
+      top: 0;
+      left: 40%;
+      font-size: 30px;
+      width: 50%;
+      background: rgba(255, 255, 255, .6);
+    }
+  }
   .contact-container {
     .columns:last-child {
       margin-left: 20px;
     }
   }
+
+  .testimonial {
+    height: 400px;
+    overflow-y: auto;
+  }
+
+  .logo {
+    width: 65%;
+  }
+
+  .upper {
+    .mission-text {
+      font-size: 26px;
+    }
+  }
+
 }
 
 </style>
